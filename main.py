@@ -209,7 +209,7 @@ async def code_command(u: Update, c: ContextTypes.DEFAULT_TYPE):
     m = await u.message.reply_text("💻 AI နည်းပညာနဲ့ စနစ်တကျ ကုဒ်ရေးဆွဲပေးနေပါတယ်ရှင်... ⏳")
     prompt = f"Write a professional clean programming code for: {req}. Provide brief explanations inside the code comments."
     res = await get_ai(prompt)
-    await c.bot.edit_message_text(res, u.effective_chat.id, m.message_id)
+    await c.bot.edit_message_text(res, u.effective_chat.idpythssage_id)
 
 # --- Admin Premium Management ---
 async def add_premium(u: Update, c: ContextTypes.DEFAULT_TYPE):
@@ -419,4 +419,4 @@ async def init_app():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     web.run_app(init_app(), host="0.0.0.0", port=port)
-  python
+  
