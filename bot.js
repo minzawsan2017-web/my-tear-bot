@@ -1,11 +1,13 @@
 require('dotenv').config();
-const { Bot, InlineKeyboard, Keyboard } = require('grammy');
+const { Bot, InlineKeyboard, Keyboard, HttpError } = require('grammy'); // 👈 ဒီနေရာမှာ HttpError ကို ထည့်သွင်းပေးပါ
 const mongoose = require('mongoose');
 const express = require('express');
 const { User, Setting } = require('./models');
 
 const bot = new Bot(process.env.BOT_TOKEN);
-// 📌 Bot ထဲမှာ Error တက်တိုင်း Bot မရပ်သွားစေရန် ကာကွယ်သည့် Catch Handler
+const OWNER_ID = Number(process.env.OWNER_ID);
+
+// 📌 Bot Error Handling
 bot.catch((err) => {
     const ctx = err.ctx;
     console.error(`Error while handling update ${ctx.update.update_id}:`);
@@ -16,11 +18,8 @@ bot.catch((err) => {
         console.error("Unknown error:", e);
     }
 });
-const OWNER_ID = Number(process.env.OWNER_ID);
 
-// 📌 Bot Error တက်ပြီး လုံးဝမရပ်သွားအောင် ကာကွယ်ခြင်း
-process.on('uncaughtException', (err) => { console.error('Uncaught Exception:', err); });
-process.on('unhandledRejection', (reason, promise) => { console.error('Unhandled Rejection:', reason); });
+// ကျန်တဲ့ Code တွေကတော့ အရင်အတိုင်း ဆက်ရှိနေပါမယ်...
 
 // MongoDB ချိတ်ဆက်ခြင်း
 mongoose.connect(process.env.MONGO_URI).then(() => {
