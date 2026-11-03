@@ -5,6 +5,17 @@ const express = require('express');
 const { User, Setting } = require('./models');
 
 const bot = new Bot(process.env.BOT_TOKEN);
+// 📌 Bot ထဲမှာ Error တက်တိုင်း Bot မရပ်သွားစေရန် ကာကွယ်သည့် Catch Handler
+bot.catch((err) => {
+    const ctx = err.ctx;
+    console.error(`Error while handling update ${ctx.update.update_id}:`);
+    const e = err.error;
+    if (e instanceof HttpError) {
+        console.error("Could not contact Telegram:", e);
+    } else {
+        console.error("Unknown error:", e);
+    }
+});
 const OWNER_ID = Number(process.env.OWNER_ID);
 
 // 📌 Bot Error တက်ပြီး လုံးဝမရပ်သွားအောင် ကာကွယ်ခြင်း
